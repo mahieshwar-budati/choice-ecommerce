@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHOICE - Your Smart Shopping Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+/* Navbar */
+header{
+    background:#111;
+    color:white;
+    padding:15px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:700;
+    color:#ff6a00;
+}
+
+nav ul{
+    list-style:none;
+    display:flex;
+    gap:25px;
+}
+
+nav ul li{
+    cursor:pointer;
+}
+
+nav ul li:hover{
+    color:#ff6a00;
+}
+
+/* Hero Section */
+.hero{
+    background:linear-gradient(to right,#ff6a00,#ff9900);
+    color:white;
+    padding:80px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.hero-text{
+    max-width:500px;
+}
+
+.hero-text h1{
+    font-size:42px;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    font-size:18px;
+    margin-bottom:25px;
+}
+
+.hero button{
+    padding:12px 25px;
+    border:none;
+    background:black;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+.hero button:hover{
+    background:#333;
+}
+
+/* Products */
+.products{
+    padding:60px 5%;
+}
+
+.products h2{
+    margin-bottom:40px;
+    font-size:28px;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    text-align:center;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.card h3{
+    margin:15px 0 8px;
+}
+
+.card p{
+    color:#555;
+}
+
+.card button{
+    margin-top:10px;
+    padding:8px 15px;
+    border:none;
+    background:#ff6a00;
+    color:white;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+/* Footer */
+footer{
+    background:#111;
+    color:white;
+    padding:25px;
+    text-align:center;
+    margin-top:60px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">CHOICE</div>
+    <nav>
+        <ul>
+            <li>Home</li>
+            <li>Shop</li>
+            <li>Deals</li>
+            <li>Contact</li>
+        </ul>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-text">
+        <h1>Choose Smart. Choose Better.</h1>
+        <p>Discover amazing deals on fashion, electronics and more.</p>
+        <button>Shop Now</button>
+    </div>
+</section>
+
+<section class="products">
+    <h2>Featured Products</h2>
+    <div class="product-grid" id="productGrid">
+        <!-- Products will load dynamically -->
+    </div>
+</section>
+
+<footer>
+    © 2026 CHOICE. All Rights Reserved.
+</footer>
+
+<script>
+async function loadProducts() {
+    try {
+        const res = await fetch("http://localhost:5000/api/products");
+        const products = await res.json();
+
+        const grid = document.getElementById("productGrid");
+        grid.innerHTML = "";
+
+        if (products.length === 0) {
+            grid.innerHTML = "<p>No products available.</p>";
+            return;
+        }
+
+        products.forEach(product => {
+            const card = `
+                <div class="card">
+                    <img src="${product.image}" alt="">
+                    <h3>${product.name}</h3>
+                    <p>${product.price}</p>
+                    <button>Buy Now</button>
+                </div>
+            `;
+            grid.innerHTML += card;
+        });
+
+    } catch (error) {
+        console.error("Error loading products:", error);
+    }
+}
+
+window.onload = loadProducts;
+</script>
+
+</body>
+</html>
